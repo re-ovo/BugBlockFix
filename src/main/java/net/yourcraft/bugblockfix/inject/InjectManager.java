@@ -64,6 +64,7 @@ public class InjectManager {
     }
 
     private Field field;
+    private Field field2;
 
     public void injectPlugin(Plugin plugin) {
         if (field == null) {
@@ -74,11 +75,20 @@ public class InjectManager {
             }
             field.setAccessible(true);
         }
+        if(field2 == null){
+            try {
+                field2 = RegisteredListener.class.getDeclaredField("ignoreCancelled");
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
+            }
+            field2.setAccessible(true);
+        }
         try {
             HandlerList handlerList = BlockBreakEvent.getHandlerList();
             for (RegisteredListener registeredListener : handlerList.getRegisteredListeners()) {
                 if (registeredListener.getPlugin().getName().equalsIgnoreCase(plugin.getName())) {
                     field.set(registeredListener, eventPriority);
+                    field2.set(registeredListener,true);
                     verbose("成功修改插件" + plugin.getName() + ": " + registeredListener.getListener().getClass().getName());
                 }
             }

@@ -1,0 +1,5 @@
+name: BugBlockFix
+version: ${project.version}
+main: net.yourcraft.bugblockfix.BugBlockFix
+authors: [RE]
+load: STARTUP
